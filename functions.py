@@ -186,7 +186,7 @@ def scrape_gtrends(keywords, timeframes, is_email_automation):
                 df_tail_list.append(df.tail(5))
 
                 # Esperamos 3s antes de pasar a siguiente keyword para no saturar el servidor
-                time.sleep(3)
+                #time.sleep(3)
         
                 logging.info(f'Ok - Informacion de Trends de timeframe "{timeframe}" extraida para keyword: "{keyword}".')
     
