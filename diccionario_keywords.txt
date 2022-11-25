@@ -1,0 +1,4 @@
+market;wall street;stock;dollar;euro;s&p 500
+bitcoin;cryptocurrency;crypto crash; luna coin;bitcoin price
+ethereum;eth;ethereum to dollar;blockchain
+ecommerce;shopify;marketplace;online marketing;google ads
