@@ -6,7 +6,7 @@ import functions
 
 # Importar y configurar logging para guardar registros de ejecuciones y errores.
 import logging
-logging.basicConfig(filename='scraper_1d.log', level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+logging.basicConfig(filename='scraper_1d.log', filemode='w', level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
 
 def main():
@@ -25,9 +25,7 @@ def main():
 if __name__ == '__main__':
     # Dejar logging solo en caso de que ocurra un error.
     try:
-        logging.disable(logging.CRITICAL)
         main()
 
     except Exception:
-        logging.disable(logging.NOTSET)
         logging.info(traceback.format_exc())

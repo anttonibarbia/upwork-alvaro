@@ -147,7 +147,7 @@ def scrape_gtrends(keywords, timeframes, is_email_automation):
                 df = pytrends.interest_over_time()
                 
             except Exception as e:
-                logging.info(f'Error - PyTrends no funciono correctamente para keyword: "{keyword}".')
+                logging.info(f'Error - PyTrends no funciono correctamente para timeframe "{timeframe}" y keyword "{keyword}".')
                 logging.info(f'----> Detalle error: {e}')
                 continue
             
@@ -189,9 +189,12 @@ def scrape_gtrends(keywords, timeframes, is_email_automation):
                 #time.sleep(3)
         
                 logging.info(f'Ok - Informacion de Trends de timeframe "{timeframe}" extraida para keyword: "{keyword}".')
-    
-    df_all = pd.concat(df_list, ignore_index=True)
-    df_tail_all = pd.concat(df_tail_list, ignore_index=True)
+
+    if len(df_list) > 0:
+        df_all = pd.concat(df_list, ignore_index=True)
+        df_tail_all = pd.concat(df_tail_list, ignore_index=True)
+    else:
+        logging.info(f'Error - Pytrends no devolvió ningun resultado para el grupo de keywords.')
 
     # Si no es para email, guardar df en bbdd MySQL
     if is_email_automation == False:
@@ -204,5 +207,3 @@ def scrape_gtrends(keywords, timeframes, is_email_automation):
         df_tail_all.to_html(os.path.join(os.getcwd(), 'tails_table.html'), index=False)
 
         return now_date
-
-

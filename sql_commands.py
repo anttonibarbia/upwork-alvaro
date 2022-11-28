@@ -11,4 +11,12 @@ engine = create_engine("mysql+pymysql://" + creds.user_mysql + ":" + creds.pass_
 # sql = "DROP TABLE IF EXISTS weekly_keyword_searches"
 # engine.execute(sql)
 
-print(engine.table_names())
+#SELECT
+#sql = "SELECT DISTINCT execution_timestamp FROM keyword_volumes ORDER BY execution_timestamp DESC LIMIT 100"
+sql = "SELECT COUNT(*) FROM gtrends.keyword_volumes"
+result = engine.execute(sql)
+for row in result:
+    print(row)
+
+
+#print(engine.table_names())
