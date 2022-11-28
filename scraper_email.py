@@ -5,7 +5,7 @@ import imaplib, email
 from email import policy
 
 # Importar credenciales y funciones
-import creds
+import config
 import functions
 
 # Importar y configurar logging para guardar registros de ejecuciones y errores.
@@ -19,11 +19,11 @@ def main():
     keyword_dict = functions.load_keywords()
 
     # Lista de timeframes para los que se van ha hacer busquedas: ultimas 1h, 4h y 24h.
-    timeframes = ['now 1-H', 'now 4-H', 'now 1-d']
+    timeframes = config.timeframes_scraper_email
 
     # Iniciar conexion imap
     mail = imaplib.IMAP4_SSL('imap.gmail.com', 993)
-    mail.login(creds.user_email, creds.pass_email)
+    mail.login(config.user_email, config.pass_email)
 
     # Seleccionar mensajes sin leer del inbox
     mail.select('Inbox')

@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
-import creds
+import config
 
-engine = create_engine("mysql+pymysql://" + creds.user_mysql + ":" + creds.pass_mysql + "@" + creds.host_mysql + "/" + creds.db_mysql)
+engine = create_engine("mysql+pymysql://" + config.user_mysql + ":" + config.pass_mysql + "@" + config.host_mysql + "/" + config.db_mysql)
 
 #CREAR TABLA NUEVA
 # sql = "CREATE TABLE keyword_volumes (execution_timestamp DATETIME, keyword VARCHAR(50), timeframe VARCHAR(20), datetime DATETIME, volume INTEGER)"

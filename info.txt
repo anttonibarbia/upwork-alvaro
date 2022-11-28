@@ -1,0 +1,40 @@
+Digital Ocean:
+user: nixoldb@gmail.com
+pass: Olmedo86
+
+droplet digital ocean
+name: automatizacion-trends
+IP: 167.99.86.151
+pass: trends1Alvaro
+
+droplet2
+IP: 178.62.51.185
+pass: trends1Alvaro
+
+MySQL 
+user: alvaro
+host: localhost
+pass: trends1Alvaro
+
+db: gtrends
+table: keyword_volumes
+
+command to login from server as root: sudo mysql
+command to login with user: mysql -u alvaro -p
+
+Schema:
++---------------+--------------+-----------------+---------------------+------------------+----------------+-------------+-----------+--------------------------+------------------------+-------------------+---------------+--------------------+--------------------+--------------------+-------------+------------+-------+---------------------------------+----------------+-----------------------+--------+
+| TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME      | COLUMN_NAME         | ORDINAL_POSITION | COLUMN_DEFAULT | IS_NULLABLE | DATA_TYPE | CHARACTER_MAXIMUM_LENGTH | CHARACTER_OCTET_LENGTH | NUMERIC_PRECISION | NUMERIC_SCALE | DATETIME_PRECISION | CHARACTER_SET_NAME | COLLATION_NAME     | COLUMN_TYPE | COLUMN_KEY | EXTRA | PRIVILEGES                      | COLUMN_COMMENT | GENERATION_EXPRESSION | SRS_ID |
++---------------+--------------+-----------------+---------------------+------------------+----------------+-------------+-----------+--------------------------+------------------------+-------------------+---------------+--------------------+--------------------+--------------------+-------------+------------+-------+---------------------------------+----------------+-----------------------+--------+
+| def           | gtrends      | keyword_volumes | execution_timestamp |                1 | NULL           | YES         | datetime  |                     NULL |                   NULL |              NULL |          NULL |                  0 | NULL               | NULL               | datetime    |            |       | select,insert,update,references |                |                       |   NULL |
+| def           | gtrends      | keyword_volumes | keyword             |                2 | NULL           | YES         | varchar   |                       50 |                    200 |              NULL |          NULL |               NULL | utf8mb4            | utf8mb4_0900_ai_ci | varchar(50) |            |       | select,insert,update,references |                |                       |   NULL |
+| def           | gtrends      | keyword_volumes | timeframe           |                3 | NULL           | YES         | varchar   |                       20 |                     80 |              NULL |          NULL |               NULL | utf8mb4            | utf8mb4_0900_ai_ci | varchar(20) |            |       | select,insert,update,references |                |                       |   NULL |
+| def           | gtrends      | keyword_volumes | datetime            |                4 | NULL           | YES         | datetime  |                     NULL |                   NULL |              NULL |          NULL |                  0 | NULL               | NULL               | datetime    |            |       | select,insert,update,references |                |                       |   NULL |
+| def           | gtrends      | keyword_volumes | volume              |                5 | NULL           | YES         | int       |                     NULL |                   NULL |                10 |             0 |               NULL | NULL               | NULL               | int         |            |       | select,insert,update,references |                |                       |   NULL |
++---------------+--------------+-----------------+---------------------+------------------+----------------+-------------+-----------+--------------------------+------------------------+-------------------+---------------+--------------------+--------------------+--------------------+-------------+------------+-------+---------------------------------+----------------+-----------------------+--------+
+
+
+check mysql status: systemctl status mysql.service
+start mysql server: sudo systemctl start mysql.service
+get database size in mysql: SELECT table_schema AS "Database", SUM(data_length + index_length) / 1024 / 1024 AS "Size (MB)" FROM information_schema.TABLES GROUP BY table_schema;
+

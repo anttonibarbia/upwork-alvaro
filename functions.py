@@ -16,7 +16,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 # Importar credenciales
-import creds
+import config
 
 
 # Definimos funciones que se van a ejecutar desde scripts
@@ -48,13 +48,11 @@ def send_email_results(keywords, now_date):
 
     subject = f"Resultados Google Trends - {keywords[0].title()} - {now_date}"
     text = '5 últimos registros para cada una de las keywords:'
-    sender_email = "scraping.robot1@gmail.com"
-    recipients = ["antton.ibarbia@gmail.com", "antton_1414@hotmail.com"]
 
     # Crear mensaje multipart y definir headers
     message = MIMEMultipart()
-    message["From"] = sender_email
-    message["To"] = ", ".join(recipients)
+    message["From"] = config.user_email
+    message["To"] = ", ".join(config.recipients_email)
     message["Subject"] = subject
 
     # Añadir body al email
@@ -79,8 +77,8 @@ def send_email_results(keywords, now_date):
     # Logear al servidor con contexto seguro y enviar email
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-        server.login(sender_email, creds.pass_email)
-        server.sendmail(sender_email, recipients, message.as_string())
+        server.login(config.user_email, config.pass_email)
+        server.sendmail(config.user_email, config.recipients_email, message.as_string())
 
     logging.info(f'Emails de resultados enviados.')
 
@@ -91,13 +89,11 @@ def send_email_no_results(keyword):
 
     subject = f"No resultados para keyword {keyword}"
     text = f'Google Trends no tiene información sobre keyword {keyword}'
-    sender_email = "scraping.robot1@gmail.com"
-    recipients = ["antton.ibarbia@gmail.com", "antton_1414@hotmail.com"]
 
     # Crear mensaje multipart y definir headers
     message = MIMEMultipart()
-    message["From"] = sender_email
-    message["To"] = ", ".join(recipients)
+    message["From"] = config.user_email
+    message["To"] = ", ".join(config.recipients_email)
     message["Subject"] = subject
 
     # Añadir body al email
@@ -106,8 +102,8 @@ def send_email_no_results(keyword):
     # Logear al servidor con contexto seguro y enviar email
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-        server.login(sender_email, creds.pass_email)
-        server.sendmail(sender_email, recipients, message.as_string())
+        server.login(config.user_email, config.pass_email)
+        server.sendmail(config.user_email, config.recipients_email, message.as_string())
 
 
 
@@ -119,14 +115,9 @@ def scrape_gtrends(keywords, timeframes, is_email_automation):
     # Definir pytrends
     pytrends = TrendReq(timeout=(15,40), retries=2, backoff_factor=0.1)
 
-    # Definir parametros de búsqueda (excepto timeframe)
-    category = '7'              # finanzas
-    geo = ''                    # default: todo el mundo
-    gprop = ''                  # default: busquedas web
-
     # Si no es para email, crear conexion a la bbdd MySQL
     if is_email_automation == False:
-        engine = create_engine("mysql+pymysql://" + creds.user_mysql + ":" + creds.pass_mysql + "@" + creds.host_mysql + "/" + creds.db_mysql)
+        engine = create_engine("mysql+pymysql://" + config.user_mysql + ":" + config.pass_mysql + "@" + config.host_mysql + "/" + config.db_mysql)
     
     # Crear listas para añadir dataframes y ultimos 5 registros de cada uno.
     df_list = []
@@ -141,7 +132,7 @@ def scrape_gtrends(keywords, timeframes, is_email_automation):
         for timeframe in timeframes:
             try:
                 # Cargar pytrends con parametros
-                pytrends.build_payload(keyword_list, category, timeframe, geo, gprop)
+                pytrends.build_payload(keyword_list, config.category, timeframe, config.geo, config.gprop)
 
                 # Realizar busqueda y sacar resultados a dataframe de pandas
                 df = pytrends.interest_over_time()
@@ -186,7 +177,7 @@ def scrape_gtrends(keywords, timeframes, is_email_automation):
                 df_tail_list.append(df.tail(5))
 
                 # Esperamos 3s antes de pasar a siguiente keyword para no saturar el servidor
-                time.sleep(2)
+                time.sleep(3)
         
                 logging.info(f'Ok - Informacion de Trends de timeframe "{timeframe}" extraida para keyword: "{keyword}".')
 
