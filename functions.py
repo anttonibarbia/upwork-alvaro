@@ -84,11 +84,11 @@ def send_email_results(keywords, now_date):
 
 
 
-# Funcion para enviar emails con resultados
+# Funcion para enviar email cuando no haya resultados
 def send_email_no_results(keyword):
 
-    subject = f"No resultados para keyword {keyword}"
-    text = f'Google Trends no tiene información sobre keyword {keyword}'
+    subject = f'No resultados para keyword "{keyword}"'
+    text = f'Google Trends no tiene información sobre keyword "{keyword}"'
 
     # Crear mensaje multipart y definir headers
     message = MIMEMultipart()
@@ -145,7 +145,6 @@ def scrape_gtrends(keywords, timeframes, is_email_automation):
             # Si Trends no da datos, enviar correo informando de ello y pasar a siguiente keyword.
             if len(df) == 0:
                 logging.info(f'No hay resultados de Trends para kewyord: "{keyword}".')
-                send_email_no_results(keyword, is_keyword_undefined=False)
                 break
 
             else:
@@ -181,20 +180,22 @@ def scrape_gtrends(keywords, timeframes, is_email_automation):
         
                 logging.info(f'Ok - Informacion de Trends de timeframe "{timeframe}" extraida para keyword: "{keyword}".')
 
-    if len(df_list) > 0:
+    if len(df_list) == 0:
+        logging.info(f'Error - Pytrends no devolvió ningun resultado para el grupo de keywords.')
+        return None
+
+    else:
         df_all = pd.concat(df_list, ignore_index=True)
         df_tail_all = pd.concat(df_tail_list, ignore_index=True)
-    else:
-        logging.info(f'Error - Pytrends no devolvió ningun resultado para el grupo de keywords.')
 
-    # Si no es para email, guardar df en bbdd MySQL
-    if is_email_automation == False:
-        df_all.to_sql('keyword_volumes', engine, if_exists='append', index=False)
+        # Si no es para email, guardar df en bbdd MySQL
+        if is_email_automation == False:
+            df_all.to_sql('keyword_volumes', engine, if_exists='append', index=False)
 
-    # Si es para email, guardar df en csv y tails en html
-    elif is_email_automation == True:
-        now_date = now_datetime.strftime("%Y%m%d")
-        df_all.to_csv(os.path.join(os.getcwd(), f'resultados_grupo_{keywords[0]}_{now_date}.csv'), index=False)
-        df_tail_all.to_html(os.path.join(os.getcwd(), 'tails_table.html'), index=False)
+        # Si es para email, guardar df en csv y tails en html
+        elif is_email_automation == True:
+            now_date = now_datetime.strftime("%Y%m%d")
+            df_all.to_csv(os.path.join(os.getcwd(), f'resultados_grupo_{keywords[0]}_{now_date}.csv'), index=False)
+            df_tail_all.to_html(os.path.join(os.getcwd(), 'tails_table.html'), index=False)
 
-        return now_date
+            return now_date

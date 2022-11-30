@@ -3,19 +3,14 @@ user: nixoldb@gmail.com
 pass: Olmedo86
 
 droplet digital ocean
-name: automatizacion-trends
-IP: 167.99.86.151
-pass: trends1Alvaro
-
-droplet2
-IP: 178.62.51.185
+name: automatizacion-trends-3
+IP: 46.101.16.99
 pass: trends1Alvaro
 
 MySQL 
 user: alvaro
-host: localhost
+host: % 
 pass: trends1Alvaro
-
 db: gtrends
 table: keyword_volumes
 
