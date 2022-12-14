@@ -48,11 +48,12 @@ def main():
                 keywords = [keyword]
             
             now_date = functions.scrape_gtrends(keywords, timeframes, is_email_automation=True)
-            functions.send_email_results(keywords, now_date)
-    
-            # Borrar archivos temporales
-            os.remove(os.path.join(os.getcwd(), f'resultados_grupo_{keywords[0]}_{now_date}.csv'))
-            os.remove(os.path.join(os.getcwd(), 'tails_table.html'))
+            if now_date is not None:
+                functions.send_email_results(keywords, now_date)
+        
+                # Borrar archivos temporales
+                os.remove(os.path.join(os.getcwd(), f'resultados_grupo_{keywords[0]}_{now_date}.csv'))
+                os.remove(os.path.join(os.getcwd(), 'tails_table.html'))
 
 
 if __name__ == '__main__':

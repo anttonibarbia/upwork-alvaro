@@ -1,6 +1,6 @@
 # Credenciales de MySQL
-user_mysql = 'antton'
-pass_mysql = 'Nottnana1!'
+user_mysql = 'alvaro'
+pass_mysql = 'trends1Alvaro!'
 host_mysql = 'localhost'
 db_mysql = 'gtrends'
 
